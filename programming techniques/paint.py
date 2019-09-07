@@ -1,6 +1,12 @@
-height = input("Enter height in cm: ")
-width = input("Enter width in cm: ")
-depth = input("Enter depth in cm")
+height = int(input("Enter height in cm: "))
+width = int(input("Enter width in cm: "))
+depth = int(input("Enter depth in cm: "))
 
-print(height * width * 2 + height * depth + width * depth)
+wall = int(height * width * 2 + height * depth + width * depth)
+
+paint = int(input("Enter the amount of paint in militers: "))
+
+paint_needed = int(wall / paint)
+
+print("We neeed " + str(paint_needed) + " mililitres of paint")
 
