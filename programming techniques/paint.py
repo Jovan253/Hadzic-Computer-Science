@@ -4,9 +4,9 @@ depth = int(input("Enter depth in cm: "))
 
 wall = int(height * width * 2 + height * depth + width * depth)
 
-paint = int(input("Enter the amount of paint in militers: "))
+paint = int(input("Enter the amount of paint in a can of paint: "))
 
 paint_needed = int(wall / paint)
 
-print("We neeed " + str(paint_needed) + " mililitres of paint")
+print("We need " + str(paint_needed) + " cans of paint")
 
