@@ -7,10 +7,10 @@ print("Enter 3 for scissors")
 player_score = 0
 comp_score = 0
 
-from random import randint
-while player_score != 3 or comp_score != 3:
+from random import randint  ### SRC - You typically put import statements at the top of the file
+while player_score != 3 or comp_score != 3: ### SRC - I like this, best of 3, but can you let the player choose to play again?
     
-    choice = int(input())
+    choice = int(input()) ### SRC - it would be good to validate the input
     computer_choice = randint(1,3)
     if choice == 1 and computer_choice == 2:
         comp_score += 1
@@ -37,7 +37,7 @@ while player_score != 3 or comp_score != 3:
 
     if comp_score == 3:
         print("The Computer Won, Better Luck Next Time")
-        break
+        break ### SRC - I don't like break, do you need it here?
     elif player_score == 3:
         print("Congrats, You Beat The Computer")
         break
