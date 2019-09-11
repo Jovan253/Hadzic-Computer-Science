@@ -8,5 +8,10 @@ paint = int(input("Enter the amount of paint in a can of paint: "))
 
 paint_needed = int(wall / paint)
 
+
+
 print("We need " + str(paint_needed) + " cans of paint")
 
+# SRC - Great code but you can do this last line like:
+
+print("We need", paint_needed, "cans of paint")
