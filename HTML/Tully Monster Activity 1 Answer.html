@@ -1,0 +1,50 @@
+<!-- Copyright (C) 2016 PG Online Ltd -->
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>The Tully Monster</title>
+	<style>
+		body {font-family: arial, "sans-serif";}
+	</style>
+</head>
+<body>
+
+<h1>The Tully Monster</h1>
+
+<p>The Tully Monster is a fossilised creature believed to have lived 300 million years ago. It was discovered by and named after Francis Tully in 1958.</p>
+
+<div id="monster">
+<img src="/TullyMonster.png" />
+</div>
+
+<form name="question">
+<p id="box">Question - How long was the Tully Monster?</p> 
+<button type="button" onclick="document.getElementById('box').innerHTML = 'The Tully Monster grew to 35cm long.'">Show answer</button>
+Answer: <input type="text" name="answer">
+<button type="button" onclick="validate()">Show answer</button>
+<p id="box2">Click below to find out where it lived.</p> 
+<button type="button" onclick="document.getElementById('box2').innerHTML = 'It lived in the tropical estuaries of Illinois, USA.'">Show answer</button>
+</form>
+
+<script>
+document.write("<h1>Goodbye World!</h1>");
+function validate() {
+    var x = document.forms["question"]["answer"].value;
+    if (x == "") {
+        document.getElementById("box").style.color="red";
+    }
+    else if (x == "35cm"){
+         alert("Correct");
+    }
+}
+function showHide() {
+  var x = document.getElementById("monster");
+  if(x.style.display == 'block')
+     x.style.display = 'none';
+   else
+     x.style.display = 'block';
+}
+</script>
+</body>
+</html>
