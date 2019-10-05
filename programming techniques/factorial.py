@@ -1,10 +1,9 @@
 def fact(num):
     if num == 0:
-        factorial = 1
+        return 1
     else:
-         factorial = num * fact(num - 1)        
+         return num * fact(num - 1)        
      #endif
-    return factorial
 #endfunction
 
 number = int(input("Enter a number for factorial "))
