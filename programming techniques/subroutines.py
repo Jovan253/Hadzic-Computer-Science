@@ -1,10 +1,7 @@
-num = 3
-name = "Dave"
-name_list = ["D","a","v","e"]
 
-def add_one(num):
-    num += 1
-    return num
+def add_one(a_number):
+    a_number += 1
+    return a_number
 #endfunction
 
 def add_s(name): 
@@ -17,8 +14,15 @@ def append_s(name):
     print(name)
 #endprocedure    
 
-print(add_one(num))
-print(num)
+num = 3
+name = "Dave"
+name_list = ["D","a","v","e"]
+
+print(add_one(num)) #will print 4
+print(num)  # will print 3
+
+num = add_one(num) # now num will be 4
+print(num) # will print 4
 
 print(add_s(name))
 print(name)
