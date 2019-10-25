@@ -21,40 +21,38 @@ game_over = False
 # -- Manages how fast screen refreshes
 clock = pygame.time.Clock()
 
-x_pos = 30
-y_pos = 235
+block_x = size[0] // 2
+block_y = size[1] // 2
+speed = 0
+direction = 0
 
-x_dir = 1
-y_dir = -1
-x_speed = 10
-y_speed = 10
-gravity = 10
 # -- Game Loop
 while not game_over:
     # -- User input and controls
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             game_over = True
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_UP:
+                direction = -1
+            elif event.key == pygame.K_DOWN:
+                direction = 1
         #End If
+        elif event.type == pygame.KEYUP:
+            direction = 0
     #Next event
     # -- Game logic goes after this comment
+    block_y = block_y + direction * speed
+    
 
-    if x_pos > 640 or y_pos > 480:
-        x_pos = 30
-        y_pos = 235
-    else:
-        x_pos = x_pos + x_dir * x_speed
-        y_pos = y_pos + y_dir * y_speed
-        x_pos = x_pos + 1
-#        y_pos = 20 + ((x_pos - 320) ** 2)
-        print(x_pos, y_pos)    
+
     
     # -- Screen background is BLACK
     screen.fill(BLACK)
     
     # -- Draw here
-    pygame.draw.rect(screen, BLUE, (220,165,200,150))
-    pygame.draw.circle(screen, YELLOW, (x_pos,y_pos),40,0)
+    pygame.draw.rect(screen, RED, ((block_x, block_y),50,50))
+    
     
     # -- flip display to reveal new position of objects
     pygame.display.flip()
@@ -63,5 +61,4 @@ while not game_over:
     clock.tick(60)
     
 #End While - End of game loop
-pygame.quit()     
-     
+pygame.quit()  
