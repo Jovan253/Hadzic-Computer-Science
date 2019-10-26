@@ -197,6 +197,7 @@ while not game_over:
         global r_paddle_y
         global l_paddle_x
         global l_paddle_y, ball_width
+        global mouse
 
         background()
 
@@ -219,10 +220,15 @@ while not game_over:
         TextRect2 = text.get_rect()
         TextRect2.center = (width//2, 400)
         screen.blit(text, TextRect2)
-        pygame.display.flip()   
+        pygame.display.flip()
         
         mouse = pygame.mouse.get_pos()
 
+        if TextRect1.collidepoint(mouse):
+            choice == "SINGLEPLAYER"
+        elif TextRect2.collidepoint(mouse):
+            choice == "MULTIPLAYER"
+    #endif
 
         if x_val < 0:
             x_val = 320
@@ -278,10 +284,10 @@ while not game_over:
    #endprocedure          
 
 ################################CHOICE####################################
-
+        
     if choice == "MENU":
         Menu()
-    elif choice == "SINGLEPLAYER" or TextRect1.collidepoint(mouse):    
+    elif choice == "SINGLEPLAYER":    
         text_colour1 = YELLOW
         Singleplayer()
     elif choice == "MULTIPLAYER":
@@ -344,16 +350,18 @@ while not game_over:
                 new_high_score()
                 font = pygame.font.Font("freesansbold.ttf", 74)
                 text = font.render("NEW HIGH SCORE", True, BLUE)
-                center = (100,(height/2))
-                screen.blit(text, center)
+                TextRect = text.get_rect()
+                TextRect.center = (width//2, height//2)
+                screen.blit(text, TextRect)
                 pygame.display.flip
                 pygame.time.wait(5000)
             else:    
                 pygame.mixer.Sound.play(fail)
                 font = pygame.font.Font("freesansbold.ttf", 74)
                 text = font.render("GAME OVER...", True, RED)
-                center = (100,(height/2))
-                screen.blit(text, center)
+                TextRect = text.get_rect()
+                TextRect.center = (width//2, height//2)
+                screen.blit(text, TextRect)
                 pygame.display.flip()
                 pygame.time.wait(5000)
             pygame.quit()
