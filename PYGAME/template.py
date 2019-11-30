@@ -1,3 +1,9 @@
+### SRC - This is good code, but the sun is moving too
+### quickly. This is because the dimensions of the
+### screen are small comapared to the velocity.
+### You need to create a larger virtual world and then
+### shrink to fit the screen.
+
 import pygame
 
 # -- Global Constants

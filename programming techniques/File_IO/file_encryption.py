@@ -1,4 +1,5 @@
 ## Conversion of upper and lower case
+### SRC - Please continue with the coding conventions!
 f = open("djokovic_file.txt","rt")
 while True:
     char = f.read(1)
@@ -23,4 +24,10 @@ while True:
 
     shift = ord(char) + step
     char = chr(shift)
-    print(char, end='')
+    print(char, end='') ### SRC - Write the output to a file
+
+### SRC - This is not a full Caeser Cipher as it would be better if the
+### output was all alpha characters
+    
+
+    
