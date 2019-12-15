@@ -25,6 +25,8 @@ screen = pygame.display.set_mode(size)
 
 #creating invaders
 class Invader(pygame.sprite.Sprite):
+    speed = 1
+    y1 = 0
     #Define the constructor
     def __init__(self, width, height,  x_co, y_co):
         #call the constrcutor
@@ -32,16 +34,17 @@ class Invader(pygame.sprite.Sprite):
         #create a sprite and fill it
         self.image = pygame.Surface([width,height])
         self.image = pygame.image.load('invaders.png').convert_alpha()
+        self.image.set_colorkey(BLACK)
         self.image = pygame.transform.scale(self.image, (width,height))
         #set sprites position
         self.rect = self.image.get_rect()
         self.rect.x = x_co
-        self.rect.y = y_co
+        self.rect.y = y_co 
         #speed of sprite
-        self.speed = 1
     #endprocedure
 
-    def update(self):        
+    def update(self):
+        Invader.y1 = self.rect.y
         self.rect.x = self.rect.x + self.speed
         if self.rect.x % 300 == 0 and self.rect.y % 30 == 0:
             invader_b = Bullet(WHITE, 5, 10 , 0, self.rect.x, self.rect.y)
@@ -54,18 +57,18 @@ class Invader(pygame.sprite.Sprite):
           #  self.image = pygame.transform.scale(self.image, (40, 40))
         if self.rect.y < 300:
             if self.rect.x > 800:            
-                self.speed = self.speed * -1
-                self.rect.y = self.rect.y + 20
+                Invader.speed = Invader.speed * -1
+                Invader.y1 = Invader.y1 + 20
             elif self.rect.x < 0:
                 self.rect.y = self.rect.y + 20
-                self.speed = self.speed * -1
+                Invader.speed = Invader.speed * -1
         else:
             if self.rect.x > 800:            
-                self.speed = self.speed * -1
+                Invader.speed = Invader.speed * -1
                 self.rect.y = self.rect.y - 20
             elif self.rect.x < 0:
                 self.rect.y = self.rect.y - 20
-                self.speed = self.speed * -1
+                Invader.speed = Invader.speed * -1
         
         #endif
     #endprocedure
@@ -78,6 +81,7 @@ class Player(pygame.sprite.Sprite):
         self.image = pygame.Surface([width,height])
         self.image = pygame.image.load('space_player.png').convert()
         self.image = pygame.transform.scale(self.image, (width,height))
+        self.image.set_colorkey(BLACK)
         self.rect = self.image.get_rect()
         self.rect.x = size[0] // 2
         self.rect.y = size[1] - height - 10
@@ -110,13 +114,13 @@ class Bullet(pygame.sprite.Sprite):
         self.image = pygame.Surface([width, height])
         self.image.fill(color)
         self.rect = self.image.get_rect()
-        self.rect.x = x
+        self.rect.x = player.rect.x
         self.rect.y = y
         self.speed = speed
     #endprcoedure
 
     def update(self):
-        self.rect.y = self.rect.y - self.speed
+        self.rect.y =self.rect.y - self.speed
         
         
 
@@ -159,7 +163,7 @@ for x in range(invaders_n):
 #Create a Player
 player_hit_group = pygame.sprite.Group()
 
-player = Player( 40, 40)
+player = Player(40, 40)
 
 all_sprites_group.add(player)
 
@@ -181,6 +185,7 @@ while not done:
                 player.player_set_speed(3) # speed set to 3
             if event.key == pygame.K_SPACE:
                 if player.bullet_count > 0:
+                    height = 40
                     bullet = Bullet(WHITE, 5, 10, 0, size[0]//2, size[1] - height - 10)
                     bullet_group.add(bullet)
                     all_sprites_group.add(bullet)
