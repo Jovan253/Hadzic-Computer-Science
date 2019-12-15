@@ -35,12 +35,14 @@ class Ball():
     def move(self):
         self.x = self.x + (self.direction_x * self.speed)
         self.y = self.y + (self.direction_y * self.speed)
+            
+
         if self.x > size[0] or self.x < 0:
             self.direction_x = self.direction_x * -1
-            self.direction_y = self.direction_y 
+            self.direction_y = self.direction_y
         if self.y > size[1] or self.y < 0:
+            self.direction_x = self.direction_x
             self.direction_y = self.direction_y * -1
-            self.direction_x = self.direction_x 
 
         keys = pygame.key.get_pressed()
         if keys[pygame.K_d]:
@@ -89,7 +91,9 @@ for i in range(0, int(num)):
     dir_x = direction[random.randint(0,len(direction) - 1)]
     dir_y = direction[random.randint(0,len(direction) - 1)]
     sz = BallSize[random.randint(0,len(BallSize) - 1)]
-    ball = Ball(random.randint(0,640), random.randint(0,480) , speed_val, colour_val, dir_x, dir_y, sz)
+    x_val = random.randint(0,640)
+    y_val = random.randint(0,480)
+    ball = Ball(x_val, y_val, speed_val, colour_val, dir_x, dir_y, sz)
     blocks.append(ball)             
 #next
 
@@ -114,6 +118,8 @@ while not game_over:
     screen.fill (BLACK)
 
     # -- Draw here
+   # pygame.draw.rect(screen, WHITE, (size[0]//2, 0, 10, size[1]))
+   # pygame.draw.rect(screen, WHITE, (0, size[1]//2, size[0], 10))
 
     for block in blocks:
         block.draw()
