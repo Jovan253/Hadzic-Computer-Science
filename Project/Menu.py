@@ -32,9 +32,13 @@ screen = pygame.display.set_mode(size)#, pygame.FULLSCREEN)
 pygame.display.set_caption("My Game")
 background = pygame.image.load("background.png").convert()
 background = pygame.transform.smoothscale(background, size)
+title_b =  pygame.image.load("title_b.png").convert()
+title_b = pygame.transform.smoothscale(title_b, size)
+
 
 # -- Exit game flag set to false
 game_over = False
+intro = False
 # -- Manages how fast screen refreshes
 clock = pygame.time.Clock()
 
@@ -107,10 +111,19 @@ class Chaser(pygame.sprite.Sprite):
         
         self.dt = clock.tick()
         self.time_since += self.dt
-        if self.time_since > 250:
+        if self.time_since > 200:
             fireball = Projectile("fireball.png", 15, 15, self.rect.x + 30, self.rect.y, 3)
             all_sprites_list.add(fireball)
+            projectile_list.add(fireball)
+            #pygame.display.update()
             self.time_since = 0
+
+        hit = pygame.sprite.spritecollide(player, enemy_list, False)
+        for h in hit:
+            pygame.mixer.Sound.play(death)
+            pygame.time.wait(1000)
+            pygame.quit()
+            
            
 
         self.placement()
@@ -137,15 +150,19 @@ class Projectile(pygame.sprite.Sprite):
         self.rect.x = x_ref
         self.rect.y = y_ref
         self.speed = speed
+        
 
     def update(self):
         self.rect.x += self.speed
 
-        #collide = pygame.sprite.spritecollide(player, self, False)
+        collide = pygame.sprite.spritecollide(player, projectile_list, True)
 
-        if self.rect.x == player.rect.x and self.rect.y == player.rect.y:
+        for x in collide:
             pygame.mixer.Sound.play(death)
+            pygame.time.wait(1000)
             pygame.quit()
+
+        
             
         
     #def draw(self):
@@ -201,7 +218,26 @@ class Player(pygame.sprite.Sprite):
         #self.rect.y = self.rect.y + self.jump
         #if touching == True:
         player.gravity = -8
-        
+
+class Faller(pygame.sprite.Sprite):
+    def __init__(self, face, width, height):
+        super().__init__()
+        self.image = pygame.Surface([width,height])
+        self.face = face
+        self.image = pygame.image.load(self.face).convert()
+        self.image = pygame.transform.scale(self.image, (width,height))
+        self.image.set_colorkey(BLACK)
+        self.speed = 1
+        self.rect = self.image.get_rect()
+        self.rect.y = 30
+        self.rect.x = size[0]//2
+
+    def update(self):
+        self.rect.y += self.speed
+        print("moving")
+        if self.rect.y > size[1]:
+            self.rect.y = 0
+#endclass        
 
 
 class Level(pygame.sprite.Sprite):
@@ -229,7 +265,7 @@ class Level(pygame.sprite.Sprite):
         font = pygame.font.Font("freesansbold.ttf", 32)
         text = font.render("Level Complete", True, BLUE)
         TextRect1 = text.get_rect()
-        TextRect1.center = (width//2, 300)
+        TextRect1.center = (size[0]//2, 300)
         screen.blit(text, TextRect1)
         pygame.display.update()
         
@@ -290,23 +326,15 @@ class Menu(pygame.sprite.Sprite):
         #self.mouse_y = mouse_y
         #self.rect = screen.get_rect()
         self.font = pygame.font.Font("old_school_united_stencil.ttf", 100)
-        self.title = pygame.font.Font("old_school_united_stencil.ttf", 140)
+        self.title = pygame.font.Font("abberancy.ttf", 150)
         #self.menu_open = True
-        #self.faller = Faller("character.png", 30, 30, 0)
+        #self.faller = Faller("character.png", 30, 30)
+        #all_sprites_list.add(self.faller)
         self.colour = GREY
-        self.y_ref = 0
+        #self.y_ref = 0
         #all_sprites_list.add(faller)
         #screen.fill(BLACK)
         #self.update()
-
-    def update(self):
-        print("yep")
-        pygame.draw.rect(screen, RED, (size[0]//2, self.y_ref,30,30))
-
-        self.y_ref += 1
-
-        if self.y_ref > size[1]:
-            self.y_ref = 0
 
         
         
@@ -318,9 +346,16 @@ class Menu(pygame.sprite.Sprite):
 #class Faller(pygame.sprite.Sprite):
  #   def __init__(self):
         
-        screen.fill(BLACK)
+        screen.blit(title_b, (0,0))
 
         pygame.mixer.music.play(1)
+
+        #pygame.draw.rect(screen, RED, (size[0]//2, self.y_ref,30,30))
+
+        #self.y_ref += 1
+
+        #if self.y_ref > size[1]:
+         #   self.y_ref = 0
 
 
         
@@ -346,13 +381,14 @@ class Menu(pygame.sprite.Sprite):
 
 
     def load(self):
+        self.colour = RED
         Level_01(player, hades)
         #intro = False
         
 
 
     #def draw(self):
-     #   pygame.draw.rect(screen, BLUE, (mouse_x, mouse_y, 25, 25))
+     #   all_sprites_list.draw(self.faller)
             
 
 
@@ -365,29 +401,10 @@ class Button(pygame.sprite.Sprite):
         self.rect = self.text.get_rect()
         self.rect.center = (x_ref, y_ref)
         screen.blit(self.text, self.rect)
-        #self.image = pygame.Surface((self.text.get_width()+40, self.text.get_height()+20))
-        #self.image.fill(RED)
-        #self.image.blit(self.text, (size[0]//4, size[1]//4))
-        #self.rect = self.image.get_rect(topleft = (x_ref, y_ref))
         pygame.display.update()
-        #print("loaded")
+        
 
-#class Faller(pygame.sprite.Sprite):
- #   def __init__(self, face, width, height, speed):
-  #      self.image = pygame.Surface([width,height])
-   #     self.face = face
-    #    self.image = pygame.image.load(self.face).convert()
-     #   self.image = pygame.transform.scale(self.image, (width,height))
-      #  self.image.set_colorkey(BLACK)
-       # self.rect = self.image.get_rect()
-        #self.rect.y = 0
-        #self.rect.x = size[0]//2
-        #self.speed = 1
 
-    #def update(self):
-     #   self.rect.y += self.speed
-      #  if self.rect.y > size[1]:
-       #     self.rect.y = 0
         
         
     
@@ -401,7 +418,8 @@ class Button(pygame.sprite.Sprite):
         
 
 all_sprites_list = pygame.sprite.Group()
-#block_list = pygame.sprite.Group()
+projectile_list = pygame.sprite.Group()
+enemy_list = pygame.sprite.Group()
 circles = []
 menu = Menu()
 menu.setup()
@@ -416,7 +434,9 @@ player = Player("character.png", 30, 30, BLUE, 60, 330, 0, 0)
 all_sprites_list.add(player)
 hades = Chaser("HADES.png", 30, 90, 0, 240, 1)
 all_sprites_list.add(hades)
-#all_sprites_list.add(menu.faller)
+enemy_list.add(hades)
+#faller = Faller("character.png", 30, 30, 0)
+#all_sprites_list.add(faller)
 
 lava = Block("lava.png", 2000, 30, 0, size[1] - 30, 0, False)
 all_sprites_list.add(lava)
@@ -447,6 +467,7 @@ p_height = 0
 #count = 0
 
 
+
 # -- Game Loop
 while not game_over:
     # -- User input and controls
@@ -457,11 +478,11 @@ while not game_over:
     #Next event
 
 
-    intro = True
 
     keys = pygame.key.get_pressed()
     if keys[pygame.K_RIGHT]:
-        player.horizontal(3)        
+        player.horizontal(3)
+        #print("yep")
     if keys[pygame.K_LEFT]:
         player.horizontal(-3)        
     if keys[pygame.K_SPACE]:
@@ -471,7 +492,9 @@ while not game_over:
         pygame.quit()
 
     #if event.type == pygame.MOUSEBUTTONDOWN:
-    while intro:
+    while not intro:
+        #faller = Faller("character.png", 30, 30)
+        #all_sprites_list.add(faller)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -483,9 +506,9 @@ while not game_over:
                         #level_button.text.fill(RED)
                         print("accomplished")
                         menu.colour = RED
-                        menu.load()
+                        menu.load()                        
                         pygame.mixer.music.stop()
-                        intro = False
+                        intro = True
                     
 
 
