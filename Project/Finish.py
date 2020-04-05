@@ -40,6 +40,7 @@ title_b = pygame.transform.smoothscale(title_b, size)
 # -- Exit game flag set to false
 game_over = False
 intro = False
+leader = False
 # -- Manages how fast screen refreshes
 clock = pygame.time.Clock()
 
@@ -398,6 +399,10 @@ class Menu(pygame.sprite.Sprite):
         current_level.start = time.clock()
         Level_01(player, hades)
         #intro = False
+
+    #def leaderboard(self):
+     #   Leaderboard(self)
+        
         
 
 
@@ -418,7 +423,35 @@ class Button(pygame.sprite.Sprite):
         pygame.display.update()
         
 
+class Leaderboard(pygame.sprite.Sprite):
+    def __init__(self):
+        self.colour = GREY
+        self.count = 1
 
+    def form(self):
+        screen.fill(BLACK)
+        font = pygame.font.Font("freesansbold.ttf", 115)
+        text = font.render("LEADERBOARDS", True, GREY)
+        TextRect = text.get_rect()
+        TextRect.center = (640, 70)
+        screen.blit(text, TextRect)
+        pygame.display.flip
+
+        
+        score_f = open("Leaderboard.txt", "rt")
+        lines = score_f.readlines()
+        score_f.close()
+        for line in lines:
+            print(line)
+            font = pygame.font.Font("freesansbold.ttf", 70)
+            msg = str(line)
+            text = font.render(msg, True, GREY)
+            TextRect = text.get_rect()
+            self.count += 1
+            TextRect.center = (640, 50 + (self.count*55))
+            screen.blit(text, TextRect)
+            pygame.display.flip
+        
         
         
     
@@ -436,6 +469,7 @@ all_sprites_list = pygame.sprite.Group()
 circles = []
 menu = Menu()
 menu.setup()
+leaders = Leaderboard()
 
 f = open("map01.json", "rt")
 level01 = json.load(f)
@@ -465,7 +499,7 @@ current_level.block_list.add(lava, end_block)
 level_button = Button(size[0]//4, 300 + size[1]//4, "Level", menu)
 collectibles = Button(size[0]//4, 300 + size[1]//2, "Collectibles", menu)
 settings = Button(600 + size[0]//4, 300 + size[1]//4, "Options", menu)
-Leader_m = Button(600 + size[0]//4, 300 + size[1]//2, "Leaderboard", menu)
+leader_m = Button(600 + size[0]//4, 300 + size[1]//2, "Leaderboard", menu)
 
 
 touching = False
@@ -477,6 +511,7 @@ width = 30
 height = 30
 p_height = 0
 #count = 0
+#keys = pygame.key.get_pressed()
 
 
 
@@ -516,10 +551,47 @@ while not game_over:
                     if level_button.rect.collidepoint(mouse_x, mouse_y):
                         #level_button.text.fill(RED)
                         print("accomplished")
-                        menu.colour = RED
+                        #menu.colour = RED
                         menu.load()                        
                         pygame.mixer.music.stop()
                         intro = True
+                    elif leader_m.rect.collidepoint(mouse_x, mouse_y):
+                        #menu.colour = RED                        
+                        #Leaderboard()
+                        pygame.mixer.music.stop()
+                        #intro = True
+                        leaders.form()
+                        pygame.display.update()
+                        break
+                    
+                    break
+                
+            
+                    
+            keys = pygame.key.get_pressed()
+            if keys[pygame.K_RETURN]:
+                print("presssed")
+                menu.setup()
+                level_button = Button(size[0]//4, 300 + size[1]//4, "Level", menu)
+                collectibles = Button(size[0]//4, 300 + size[1]//2, "Collectibles", menu)
+                settings = Button(600 + size[0]//4, 300 + size[1]//4, "Options", menu)
+                leader_m = Button(600 + size[0]//4, 300 + size[1]//2, "Leaderboard", menu)
+                pygame.display.update()
+            #break
+
+    #leaders.form()
+                        
+    #while not leader:
+     #   for event in pygame.event.get():
+      #      if event.type == pygame.QUIT:
+       #         pygame.quit()
+        #    if keys[pygame.K_SPACE]:
+         #       print("pressed")
+          #      leader = True
+        
+        
+        
+                        
                     
 
 
